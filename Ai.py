@@ -1,50 +1,128 @@
 import numpy as np
+import time
 from typing import List, Tuple
-
+from copy import deepcopy
 # ManhattanDistance Heuristics. Take the X and Y coordinates of every value in the GoalState and the CurrentState. Calculate the total ManhattenDistance and return it
-
-
 
 def successor_state_generator(current_state):
     successors = []
     possible_moves = ["Up", "Down", "Left", "Right"]
-
     # first step is finding where the B is:
+
+    #printVector for position
+    print("Np Vector : ")
+    print(np.argwhere(current_state=='B'))
     x_position_blank = np.argwhere(current_state == 'B')[0][0]
     y_position_blank = np.argwhere(current_state == 'B')[0][1]
 
+
+    print("THIS IS THE CURRENT STATE THAT IS BEING MODIFIED BY THE MOVES ")
+    print(current_state)
+    print("----------------------")
+    #moving right
+    if y_position_blank < 2 :
+        #new_stateRight = current_state[:]
+        new_stateRight = deepcopy(current_state)
+        temporary_ = current_state[x_position_blank][y_position_blank+1]
+        new_stateRight[x_position_blank][y_position_blank+1] = 'B'
+        new_stateRight[x_position_blank][y_position_blank] = temporary_
+        successors.append(new_stateRight)
+        print("This is the new Successor State with value Right")
+        print (new_stateRight.tolist())
+        print ("-------------------")
+
+    #moving Left
+    if y_position_blank > 0 :
+        new_stateLeft = current_state[:][:]
+        new_stateLeft = deepcopy(current_state)
+        temporary_ = current_state[x_position_blank][y_position_blank-1]
+        new_stateLeft[x_position_blank][y_position_blank-1] = 'B'
+        new_stateLeft[x_position_blank][y_position_blank] = temporary_
+        successors.append(new_stateLeft)
+        print("This is the new Successor State with value Left")
+        print (new_stateLeft.tolist())
+        print ("-------------------")
+
+
+    #MovingUP
+
+    if x_position_blank > 0 :
     
-    pass
+        new_stateUp = deepcopy(current_state)
+        temporary_ = current_state[x_position_blank-1][y_position_blank]
+        new_stateUp[x_position_blank-1][y_position_blank] = 'B'
+        new_stateUp[x_position_blank][y_position_blank] = temporary_
+        successors.append(new_stateUp)
+        print("This is the new Successor State with value Up")
+        print (new_stateUp.tolist())
+        print ("-------------------")
+
+    #movingDown
+
+    if x_position_blank < 2 :
+        new_stateDown = deepcopy(current_state)
+        temporary_ = current_state[x_position_blank+1][y_position_blank]
+        new_stateDown[x_position_blank+1][y_position_blank] = 'B'
+        new_stateDown[x_position_blank][y_position_blank] = temporary_
+        successors.append(new_stateDown)
+        print("This is the new Successor State with value Down")
+        print (new_stateDown.tolist())
+        print ("-------------------")
+
+   
+
+    return successors
+
+
 
 
 def DepthFirstSearch(istate, gstate):
+    print("DepthFirstSearch has been called")
     open_list = [istate]
     closed_list = []
 
+    print("THIS IS THE OPEN LIST BEFORE DOING ANYTHING")
+    print(open_list)
     while open_list:
         current_state = open_list.pop()
         closed_list.append(current_state)
-
-        if current_state == gstate:
+        print("THIS IS THE OPEN LIST After the first POP")
+        print(open_list)
+        print("This is the state that is passed to the successor ")
+        print(current_state)
+        
+        if np.array_equal(current_state,gstate):
             return closed_list
 
-        for successor in successor_state_generator(istate):
-            open_list.push(successor)
+        for successor in successor_state_generator(current_state):
+            open_list.append(successor)
+            print("----------------")
+            print("This is the Current Open List")
+            print(open_list)
+            #time.sleep(3)
+    print("finish")
 
 
 def BreathFirstSearch(istate, gstate):
     open_list = [istate]
     closed_list = []
 
+    print(f"Inital Open list: {open_list}")
+    print(f"Inital Closed list: {closed_list}")
     while open_list:
-        current_state = open_list.pop()
+        current_state = open_list.pop(0)
         closed_list.append(current_state)
 
-        if current_state == gstate:
+        if np.array_equal(current_state,gstate):
+            print("Value was found")
             return closed_list
 
         for successor in successor_state_generator(istate):
-            closed_list.append(successor)
+            open_list.append(successor)
+        
+        print(f"Closed List after each iteration{closed_list}")
+    
+    
 
 
 def BestFirst(istate, gstate, heuristics):
@@ -58,8 +136,9 @@ def BestFirst(istate, gstate, heuristics):
         if current_state == gstate:
             return closed_list
 
-        open_list += sorted(successor_state_generator(istate),
-                            lambda x: heuristics(x))
+        open_list.append(sorted(successor_state_generator(istate),
+                            lambda x: heuristics(x)))
+
 
 
 def Astar(istate, gstate, heuristics, ActualCost):
@@ -67,32 +146,18 @@ def Astar(istate, gstate, heuristics, ActualCost):
 
 
 # General Search takes Initial State, GoalState,SearchStrategy,Heuristics
-def general_search(istate, goal_state, search_strategy, heuristic=None):
 
+
+def general_search(istate, goal_state, search_strategy, heuristic=None):
+    print(f"General Search has been called with Heursitic = {heuristic}")
+    #time.sleep(3)
     if heuristic:
         return search_strategy(istate, goal_state, heuristic)
 
     return search_strategy(istate, goal_state)
 
 
-def main():
 
- # Transform the string inputs into a 2 day array that will be easier to keep track of x and Y positions.
-    # GoalState = list("1238B4765")
-    GoalState = list("12345678B")
-    current_state = list("5B8421736")
-    GoalStateArray = np.array(GoalState).reshape((-1, 3))
-    current_state = np.array(current_state).reshape((-1, 3))
-
-# The Use of the Numpy module allows this easy conversion. Then , we can run some heuristics
-    print(
-        f"The ManhattenDistance is : {manhatten_distance(current_state, GoalStateArray)}")
-    print(
-        f"The Hamming Distance is :  {hamming_distance(current_state,GoalStateArray)}")
-    # print(GoalStateArray)
-
-    general_search(current_state, GoalStateArray,
-                   DepthFirstSearch, manhatten_distance)
 
 
 def manhatten_distance(CurrentState: List[List[str]], FinalState: List[List[str]]) -> int:
@@ -126,6 +191,25 @@ def hamming_distance(CurrentState: List[List[str]], FinalState: List[List[str]])
 
     return (counter)
 
+def main():
+
+ # Transform the string inputs into a 2 day array that will be easier to keep track of x and Y positions.
+    # GoalState = list("1238B4765")
+    GoalState = list("12345678B")
+    current_state = list("1234567B8")
+    GoalStateArray = np.array(GoalState).reshape((-1, 3))
+    current_state = np.array(current_state).reshape((-1, 3))
+
+# The Use of the Numpy module allows this easy conversion. Then , we can run some heuristics
+    print(
+        f"The ManhattenDistance is : {manhatten_distance(current_state, GoalStateArray)}")
+    print(
+        f"The Hamming Distance is :  {hamming_distance(current_state,GoalStateArray)}")
+    print("This is the Initial State")
+    print(current_state)
+    #time.sleep(3)
+    general_search(current_state, GoalStateArray,
+                   BreathFirstSearch)
 
 if __name__ == '__main__':
     main()
