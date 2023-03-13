@@ -1,6 +1,11 @@
 import numpy as np
 
-a = [1,2,3,34,4]
+a = [[1, 2, 3, 34, 4]]
 
-print(a.pop())
-print(a.pop(0))
+b = [[1, 2, 3], [50, 6, 7]]
+
+
+
+
+a+=b
+print(a)

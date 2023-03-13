@@ -8,13 +8,8 @@ def successor_state_generator(current_state):
     successors = []
     possible_moves = ["Up", "Down", "Left", "Right"]
     # first step is finding where the B is:
-
-    #printVector for position
-    print("Np Vector : ")
-    print(np.argwhere(current_state=='B'))
     x_position_blank = np.argwhere(current_state == 'B')[0][0]
     y_position_blank = np.argwhere(current_state == 'B')[0][1]
-
 
     print("THIS IS THE CURRENT STATE THAT IS BEING MODIFIED BY THE MOVES ")
     print(current_state)
@@ -86,22 +81,17 @@ def DepthFirstSearch(istate, gstate):
     while open_list:
         current_state = open_list.pop()
         closed_list.append(current_state)
-        print("THIS IS THE OPEN LIST After the first POP")
-        print(open_list)
         print("This is the state that is passed to the successor ")
         print(current_state)
-        
         if np.array_equal(current_state,gstate):
+            print("The final value has been found")
+            print(f"This is the closed list {closed_list}")
             return closed_list
-
         for successor in successor_state_generator(current_state):
-            open_list.append(successor)
-            print("----------------")
-            print("This is the Current Open List")
-            print(open_list)
-            #time.sleep(3)
-    print("finish")
-
+            if successor not in open_list or successor not in closed_list:
+                open_list.append(successor)
+            
+    
 
 def BreathFirstSearch(istate, gstate):
     open_list = [istate]
@@ -112,20 +102,23 @@ def BreathFirstSearch(istate, gstate):
     while open_list:
         current_state = open_list.pop(0)
         closed_list.append(current_state)
+     
 
         if np.array_equal(current_state,gstate):
             print("Value was found")
+            print(f"This is the closed list : {closed_list}")
             return closed_list
 
-        for successor in successor_state_generator(istate):
+        for successor in successor_state_generator(current_state):
+            # if successor not in open_list or successor not in closed_list:
             open_list.append(successor)
-        
-        print(f"Closed List after each iteration{closed_list}")
     
     
-
+    
 
 def BestFirst(istate, gstate, heuristics):
+    
+    print("BestFirst Search ")
     open_list = [istate]
     closed_list = []
 
@@ -133,17 +126,22 @@ def BestFirst(istate, gstate, heuristics):
         current_state = open_list.pop()
         closed_list.append(current_state)
 
-        if current_state == gstate:
+        if np.array_equal(current_state,gstate):
             return closed_list
 
-        open_list.append(sorted(successor_state_generator(istate),
-                            lambda x: heuristics(x)))
+        print(f"This is sorted : {sorted(successor_state_generator(current_state),key = lambda x : heuristics(current_state,gstate))}")
+        open_list
+        
 
+        ## I AM THEERE I HAVE TO FIND A WAY TO APPEND THIS LIST TO THE OPEN LIST 
+        print(f"This is the open list : {open_list}")
+        time.sleep(3)
+        
+        
 
 
 def Astar(istate, gstate, heuristics, ActualCost):
     pass
-
 
 # General Search takes Initial State, GoalState,SearchStrategy,Heuristics
 
@@ -209,7 +207,7 @@ def main():
     print(current_state)
     #time.sleep(3)
     general_search(current_state, GoalStateArray,
-                   BreathFirstSearch)
+                   BestFirst,manhatten_distance)
 
 if __name__ == '__main__':
     main()
