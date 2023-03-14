@@ -131,7 +131,6 @@ def DepthFirstSearch(istate, gstate):
             for state in closed_list:
                 print(state)
                 print("\n \n")
-                print(f"Finished with itteration {i}")
             return closed_list
         for successor in successor_state_generator(current_state)[0]:
             if not Tester(open_list, successor) and not Tester(closed_list, successor):
@@ -153,7 +152,6 @@ def BreathFirstSearch(istate, gstate):
             for state in closed_list:
                 print(state)
                 print("\n \n")
-                print(f"Finished with itteration {i}")
             return closed_list
 
         for successor in successor_state_generator(current_state)[0]:
@@ -175,7 +173,6 @@ def BestFirst(istate, gstate, heuristics):
             for state in closed_list:
                 print(state)
                 print("\n \n")
-            print(f"Finished with itteration {i}")
             return closed_list
 
         for successor in successor_state_generator(current_state)[0]:
