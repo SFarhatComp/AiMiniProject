@@ -1,6 +1,6 @@
 import numpy as np
 import time
-from typing import List, Tuple
+from typing import List
 from copy import deepcopy
 
 
