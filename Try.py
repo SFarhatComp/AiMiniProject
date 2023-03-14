@@ -1,16 +1,9 @@
 import numpy as np
-
-a = [[5, 6, 7], [1, 2, 3], [4, 8, "B"]]
-
+from typing import List, Tuple
 
 
-inversion = 0
+
+my_dict =  {"Sami ":True , "Rayan ":True , "Erwan ":True}
 
 
-for i in range (len(a)):
-    for j in range (len(a)-1):
-
-        if a[i][j] == "0":
-            continue
-        elif a[i][j] < a[i][j+1]:
-            print("yes")
+print(len(my_dict))
