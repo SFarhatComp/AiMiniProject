@@ -4,7 +4,8 @@ from typing import List
 from copy import deepcopy
 
 
-# Function Tester is used to make sure that two states are equal
+
+# Function Tester is used to make sure that two states are equal. Might need it , might not.
 def Tester(list_of_state, State_to_be_found) -> bool:
     for state in list_of_state:
         if np.array_equal(State_to_be_found, state):
@@ -14,13 +15,38 @@ def Tester(list_of_state, State_to_be_found) -> bool:
 
 # This generator will generate all the children of any given puzzle
 def successor_state_generator(current_state, depth_counter=None, succ_dict=None) -> List[List]:
-
     successors = []
+    #NOT COMPLETED < DOES NOT WORK YET 
+    #Step 1 : find all values and pair
+    my_dict = {1:0,2:0,3:0,4:0,5:0,6:0}
+    for number,row in enumerate(current_state):
+        for column,value in enumerate(row):
+    #       print(f"the value {value} is at position {number},{column}")
+            pass
 
-  
+    #find Pairs
 
+    for number,row in enumerate(current_state):
+        for column,value in enumerate(row):
+            if value in my_dict:
+                my_dict[value]+=1
+    
+    #print(my_dict)
+
+
+    for values in my_dict:
+        if my_dict[values]>1:
+            x_position_1,y_position_1 = np.argwhere(current_state == values)[0]
+            x_position_2,y_position_2 = np.argwhere(current_state == values)[1]        
+            print(f"The x position and y position for the first instance of {values} is {x_position_1}, {y_position_1}")
+            print(f"The x position and y position for the second instance of {values} is {x_position_2}, {y_position_2}")
+
+
+            # while x_position_1!=x_position_2:
+            #     delta_position =  x_position_2 - x_position_1
+            #     to_move = x_po2sition_1 + delta_position
+            #     current_state[]
     return successors, depth_counter
-
 
 def BestFirst(istate, gstate, heuristics):
 
@@ -31,7 +57,7 @@ def BestFirst(istate, gstate, heuristics):
     while open_list:
         current_state = open_list.pop(0)
         closed_list.append(current_state)
-        if current_state == gstate:
+        if np.array_equal(current_state, gstate):
             print(
                 f"Puzzle has been solved, this is the final closed list : ")
             for state in closed_list:
@@ -84,8 +110,7 @@ def Astar(istate, gstate, heuristics):
             print(successor_dict["".join(
                 map(str, [column for row in x for column in row]))])
 
-        print(f"ITTERATION {i}")
-        i += 1
+        
 
 
 # General Search takes Initial State, GoalState,SearchStrategy,Heuristics
@@ -110,7 +135,7 @@ def my_heuristic(CurrentState: List[List[str]], FinalState: List[List[str]]) -> 
 def main():
 
     # Transform the string inputs into a 2 day array that will be easier to keep track of x and Y positions.
-    current_state = [[3,0,0,2],[0,2,1,0],[0,0,3,1],[4,0,0,4]]
+    current_state = [[1,2,3,4],[2,0,0,0],[3,0,0,0],[4,0,0,0]]
     current_state = np.array(current_state).reshape(4,4)
     goal_state =[[3,-2,-2,-2],[-3,2,1,-1],[-3,-3,3,1],[4,-4,-4,4]]
     goal_state = np.array(goal_state).reshape(4,4)
@@ -121,17 +146,17 @@ def main():
         print (row)
 
     print ("\n") 
-    print("The Goal state :")
-    for row in goal_state:
-        print(row)
+    # print("The Goal state :")
+    # for row in goal_state:
+    #     print(row)
     
 
     # The Use of the Numpy module allows this easy conversion. Then , we can run some heuristics
 
+    #successor_state_generator(current_state)
+    #general_search(current_state,goal_state,BestFirst)
 
-    # general_search(current_state,GoalStateArray,BreathFirstSearch)
-
-    my_heuristic(current_state,goal_state)
+    #my_heuristic(current_state,goal_state)
 
 if __name__ == '__main__':
     main()

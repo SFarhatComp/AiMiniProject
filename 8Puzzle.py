@@ -332,6 +332,10 @@ def main():
     GoalStateArray = np.array(GoalState).reshape((-1, 3))
     current_state = np.array(current_state).reshape((-1, 3))
 
+
+    print(current_state)
+
+    print(GoalStateArray)
     # print(f"The Manhatten Distance for the initial state is {manhatten_distance(current_state, GoalStateArray)}")
     # print(f"The Inversion for the initial state is {permutation_inversion(current_state, GoalStateArray)}")
     # print(
