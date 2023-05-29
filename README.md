@@ -17,6 +17,8 @@ Multiple Tries: The algorithms and heuristics are run on multiple tries to compa
 
 
 Getting Started
+
+
 To use the 8Puzzle Solver code, follow these steps:
 
 Clone the repository to your local machine:
