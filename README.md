@@ -15,3 +15,29 @@ Heuristics: The code incorporates multiple heuristics to estimate the cost of re
 
 Multiple Tries: The algorithms and heuristics are run on multiple tries to compare their performance. By executing them on various puzzle instances, we can evaluate their effectiveness and determine which combination yields the best results.
 
+
+To create a `requirements.txt` file for your Python project, you can follow these steps:
+
+1. Activate your project's virtual environment (if you're using one). This step ensures that the dependencies you install are isolated to your project and won't conflict with other Python installations on your system.
+
+2. Install the required packages for your project using `pip`. For example, if you install a package named `package1`, you can use the following command:
+
+   ```
+   pip install package1
+   ```
+
+   Repeat this step for all the packages your project depends on. Make sure you install the specific versions of the packages that your project requires.
+
+3. Generate the `requirements.txt` file. Run the following command in your project's root directory:
+
+   ```
+   pip freeze > requirements.txt
+   ```
+
+   This command generates a `requirements.txt` file that lists all the installed packages and their respective versions in the current environment.
+
+4. Review and modify the `requirements.txt` file if needed. It's a good practice to remove any unnecessary packages and update the versions of the packages to match the specific versions your project requires.
+
+5. Commit the `requirements.txt` file to your Git repository along with your project code. This step ensures that other users who clone your repository can easily install the required dependencies.
+
+That's it! You now have a `requirements.txt` file that contains the necessary packages and versions for your project.
